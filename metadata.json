@@ -1,0 +1,6 @@
+{
+  "name": "Fluxio",
+  "description": "Application premium d'IPTV en direct et replay avec favoris, recherche intuitive, recommandations et rappels.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

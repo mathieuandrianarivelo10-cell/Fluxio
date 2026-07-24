@@ -1,0 +1,78 @@
+# ==========================================
+# Fluxio - GitIgnore Configuration
+# ==========================================
+
+# 1. Local Environments & Secrets
+.env
+.env.local
+.env.*.local
+.env.production
+.env.development
+local.properties
+secrets.properties
+signing.properties
+google-services.json
+**/google-services.json
+
+# 2. Keystores & Signing Keys
+*.jks
+*.keystore
+*.pepk
+*.p12
+*.pem
+*.key
+*.crt
+*.der
+debug.keystore.base64
+
+# 3. Gradle & Build Output Directories
+.gradle/
+build/
+app/build/
+**/build/
+.kotlin/
+.build-outputs/
+bin/
+gen/
+out/
+tmp/
+
+# 4. Built Artifacts (APKs, AABs, DEX, JAR, AAR)
+*.apk
+*.ap_
+*.aab
+*.dex
+*.class
+*.jar
+*.aar
+
+# 5. IDE & Editor Files (Android Studio, VS Code, IntelliJ)
+.idea/
+*.iml
+.navigation/
+captures/
+.externalNativeBuild/
+.cxx/
+.vscode/
+.settings/
+.classpath
+.project
+
+# 6. Logs & Debug Files
+*.log
+*.hprof
+.firebase/
+firebase-debug.log
+firestore-debug.log
+
+# 7. OS Generated Files
+.DS_Store
+.DS_Store?
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# 8. Editor Backups & Temporary Files
+*.swp
+*~
+*.bak

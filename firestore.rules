@@ -1,0 +1,116 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper: Verifie si l'utilisateur est un administrateur
+    function isAdmin() {
+      return request.auth != null && (
+        request.auth.token.email == "r.mihaja44@gmail.com" || 
+        request.auth.token.email == "raharinirintsoa05@gmail.com" ||
+        request.auth.token.email == "mathieuandrianarivelo10@gmail.com" ||
+        (exists(/databases/$(database)/documents/users/$(request.auth.uid)) && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "admin")
+      );
+    }
+
+    // Collection 'users' :
+    // Chaque utilisateur peut lire et écrire son propre profil.
+    // Les administrateurs ont un accès complet en lecture/écriture.
+    match /users/{userId} {
+      allow read, write: if request.auth != null && (request.auth.uid == userId || isAdmin());
+    }
+
+    // Collection 'registered_phones' :
+    // Utilisé pour vérifier l'unicité et enregistrer les numéros de téléphone.
+    match /registered_phones/{phone} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && (resource == null || resource.data.uid == request.auth.uid || isAdmin());
+    }
+
+    // Collection 'catalogs' :
+    // Tout le monde peut lire la liste des chaînes et catégories.
+    // Seuls les administrateurs peuvent modifier les catalogues.
+    match /catalogs/{document} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Collection 'custom_channels' :
+    // Tout utilisateur connecté peut lire les chaînes personnalisées.
+    // Seuls les administrateurs peuvent ajouter, modifier ou supprimer des chaînes.
+    match /custom_channels/{channelId} {
+      allow read: if request.auth != null;
+      allow write: if isAdmin();
+    }
+
+    // Collection 'channel_overrides' :
+    // Lecture publique ou pour les connectés, modification réservée aux administrateurs.
+    match /channel_overrides/{channelId} {
+      allow read: if request.auth != null;
+      allow write: if isAdmin();
+    }
+
+    // Collection 'custom_programs' :
+    // Lecture pour les connectés, modification réservée aux administrateurs.
+    match /custom_programs/{programId} {
+      allow read: if request.auth != null;
+      allow write: if isAdmin();
+    }
+
+    // Collection 'subscription_notifications' :
+    // L'utilisateur ciblé peut lire ses notifications.
+    // Seuls les administrateurs peuvent créer ou gérer les notifications d'abonnement.
+    match /subscription_notifications/{notificationId} {
+      allow read: if request.auth != null && (resource.data.userId == request.auth.uid || isAdmin());
+      allow write: if isAdmin();
+    }
+
+    // Collection 'view_statistics' :
+    // Utilisé pour stocker les statistiques de visionnage globales de chaque chaîne.
+    // Tout utilisateur connecté peut lire et incrémenter les compteurs.
+    match /view_statistics/{statId} {
+      allow read, write: if request.auth != null;
+    }
+
+    // Collection 'active_sessions' :
+    // Utilisé pour suivre les sessions de visionnage actives des appareils.
+    match /active_sessions/{sessionId} {
+      allow read, write: if request.auth != null;
+    }
+
+    // Collection 'active_viewers' (et sa sous-collection de spectateurs) :
+    // Permet de suivre en temps réel qui regarde quelle chaîne.
+    match /active_viewers/{channelId} {
+      allow read, write: if request.auth != null;
+      
+      match /viewers/{viewerId} {
+        allow read, write: if request.auth != null;
+      }
+    }
+
+    // Collection 'channel_likes' :
+    // Enregistre les j'aime par chaîne.
+    match /channel_likes/{likeId} {
+      allow read, write: if request.auth != null;
+    }
+
+    // Collection 'devices' :
+    // Permet d'associer un appareil (UUID/Device ID) à un statut ou des données locales.
+    match /devices/{deviceId} {
+      allow read, write: if request.auth != null;
+    }
+
+    // Collection 'online_presence' :
+    // Gère la présence en ligne ou hors ligne des utilisateurs connectés.
+    match /online_presence/{userId} {
+      allow read, write: if request.auth != null;
+    }
+
+    // Collection 'app_updates' :
+    // Tout le monde peut lire les mises à jour de l'application.
+    // Seuls les administrateurs peuvent publier une nouvelle mise à jour.
+    match /app_updates/{document} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+  }
+}
