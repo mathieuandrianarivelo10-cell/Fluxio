@@ -1,0 +1,23 @@
+{
+  "rules": {
+    "users": {
+      "$uid": {
+        // Un utilisateur connecté peut lire tous les profils mais ne peut écrire que le sien.
+        ".read": "auth != null",
+        ".write": "auth != null && auth.uid === $uid"
+      }
+    },
+    "registered_phones": {
+      "$phone": {
+        ".read": "auth != null",
+        ".write": "auth != null && (!data.exists() || data.val() === auth.uid)"
+      }
+    },
+    "catalogs": {
+      // Tout le monde peut lire le catalogue des chaînes et des chaînes à la une.
+      ".read": "true",
+      // Seuls les administrateurs connectés peuvent modifier les catalogues.
+      ".write": "auth != null && (auth.token.email === 'r.mihaja44@gmail.com' || root.child('users').child(auth.uid).child('role').val() === 'admin')"
+    }
+  }
+}

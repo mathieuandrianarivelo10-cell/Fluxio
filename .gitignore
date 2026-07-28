@@ -1,0 +1,84 @@
+# ==========================================
+# Fluxio - Configuration GitIgnore Sécurisée
+# ==========================================
+
+# 1. Environnements Locaux & Fichiers de Secrets
+.env
+*.env
+.env.*
+.env.local
+.env.*.local
+.env.production
+.env.development
+!.env.template
+local.properties
+secrets.properties
+signing.properties
+google-services.json
+**/google-services.json
+firebase.json
+
+# 2. Clés de Signature & Keystores
+*.jks
+*.keystore
+debug.keystore
+debug.keystore.base64
+*.pepk
+*.p12
+*.pem
+*.key
+*.crt
+*.der
+
+# 3. Gradle & Répertoires de Build
+.gradle/
+build/
+app/build/
+**/build/
+.kotlin/
+.build-outputs/
+bin/
+gen/
+out/
+tmp/
+
+# 4. Artefacts Générés (APKs, AABs, DEX, JAR, AAR)
+*.apk
+*.ap_
+*.aab
+*.dex
+*.class
+*.jar
+!gradle/wrapper/gradle-wrapper.jar
+*.aar
+
+# 5. Fichiers IDE & Éditeurs (Android Studio, VS Code, IntelliJ)
+.idea/
+*.iml
+.navigation/
+captures/
+.externalNativeBuild/
+.cxx/
+.vscode/
+.settings/
+.classpath
+.project
+
+# 6. Journaux de Logs & Débogage
+*.log
+*.hprof
+.firebase/
+firebase-debug.log
+firestore-debug.log
+
+# 7. Fichiers Système d'Exploitation
+.DS_Store
+.DS_Store?
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# 8. Fichiers Temporaires
+*.swp
+*~
+*.bak
